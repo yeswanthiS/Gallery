@@ -1,6 +1,7 @@
 package com.example.gallery;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,8 +35,17 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
     @Override
     public void onBindViewHolder(@NonNull ImageViewHolder holder, int position) {
         Uri imageUri = imageUris.get(position);
-        Glide.with(context).load(imageUri).into(holder.imageView); // Load image with Glide
+        Glide.with(context).load(imageUri).into(holder.imageView); // Load image
+
+        // Set an OnClickListener to open the full image view
+        holder.imageView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, FullImageActivity.class);
+            intent.putParcelableArrayListExtra("imageUris", imageUris);
+            intent.putExtra("position", position);
+            context.startActivity(intent);
+        });
     }
+
 
     @Override
     public int getItemCount() {
